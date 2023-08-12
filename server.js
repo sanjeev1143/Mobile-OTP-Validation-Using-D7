@@ -6,13 +6,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 let otpId="";
 
-const sendOTPMessage = async()=>{
+const sendOTPMessage = async(recipient)=>{
 try {
     
 
     var data = JSON.stringify({
         "originator": "SignOTP",
-        "recipient": "+917008680932",
+        "recipient": recipient,
         "content": "Hey, your mobile verification code is: {}",
         "expiry": "600",
         "data_coding": "text"
@@ -76,7 +76,8 @@ const verifyOTPMessage=async(otp_id,otp_code)=>{
 
 
 app.post('/sendotp',(req,res)=>{
-    otpId=sendOTPMessage();
+    const {recipient} = req.body;
+    otpId=sendOTPMessage(recipient);
     res.send("OTP Sent.")
 })
 
